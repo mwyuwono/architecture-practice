@@ -22,10 +22,11 @@ This project uses components from the **M3 Design System v2** located at:
 
 ```html
 <!-- Load design tokens -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wyyew/m3-design-v2@main/src/styles/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwyuwono/m3-design-v2@main/src/styles/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwyuwono/m3-design-v2@main/src/styles/main.css">
 
 <!-- Load web components -->
-<script type="module" src="https://cdn.jsdelivr.net/gh/wyyew/m3-design-v2@main/dist/web-components.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/mwyuwono/m3-design-v2@main/dist/web-components.js"></script>
 ```
 
 ### Design Tokens Reference
