@@ -221,6 +221,15 @@
             pointer-events: none;
         }
 
+        .input-conversion {
+            display: block;
+            margin-top: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+
         .input-row {
             display: flex;
             flex-direction: column;
@@ -384,11 +393,13 @@
                         <label for="heightInput">Rise (Floor-to-Floor)</label>
                         <input type="number" id="heightInput" value="108" min="40" max="200" step="1">
                         <span class="input-suffix">IN</span>
+                        <span class="input-conversion" id="heightConversion">9'-0"</span>
                     </div>
                     <div class="input-group">
                         <label for="widthInput">Flight Width</label>
                         <input type="number" id="widthInput" value="36" min="36" max="48" step="1">
                         <span class="input-suffix">IN</span>
+                        <span class="input-conversion" id="widthConversion">3'-0"</span>
                     </div>
                 </div>
 
@@ -402,8 +413,12 @@
                             <span id="outRisers" class="result-value">-</span>
                         </div>
                         <div class="result-item">
-                            <span class="result-label">Individual Riser:</span>
+                            <span class="result-label">Riser Heights:</span>
                             <span id="outRiserHeight" class="result-value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">IRC Compliance:</span>
+                            <span id="outVariance" class="result-value">-</span>
                         </div>
                         <div class="result-item">
                             <span class="result-label">Tread Count:</span>
@@ -466,7 +481,7 @@
                     </div>
                 </div>
 
-                <p class="note">* Engineering specs derived from IRC R311.7: max riser 7.75", min tread 10", min landing 36" × 36". Not for construction without professional review.</p>
+                <p class="note">* Riser heights snapped to ¼" increments for practical construction. IRC R311.7 allows ⅜" max variance between risers. Specs: max riser 7¾", min tread 10", min landing 36" × 36". Not for construction without professional review.</p>
             </div>
 
             <div class="visuals">
@@ -481,6 +496,8 @@
         // DOM Elements
         const heightInput = document.getElementById('heightInput');
         const widthInput = document.getElementById('widthInput');
+        const heightConversion = document.getElementById('heightConversion');
+        const widthConversion = document.getElementById('widthConversion');
         const canvas = document.getElementById('stairCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -574,6 +591,48 @@
             return `${ftInStr} <span class="secondary">(${inches.toFixed(1)}")</span>`;
         }
 
+        // Helper: Calculate 0.25" increment distribution for IRC compliance
+        // Uses dual-riser approach within IRC's 3/8" variance tolerance
+        function calculate025Distribution(floorHeight, numRisers) {
+            const exactRiser = floorHeight / numRisers;
+            const rLow = Math.floor(exactRiser / 0.25) * 0.25;
+            const rHigh = rLow + 0.25;
+
+            // Number of "high" risers needed to reach exact floor height
+            // Solve: highCount × rHigh + (numRisers - highCount) × rLow = floorHeight
+            const highCount = Math.round((floorHeight - numRisers * rLow) / 0.25);
+            const lowCount = numRisers - highCount;
+
+            // Handle edge case where all risers are same height
+            const isUniform = highCount === 0 || highCount === numRisers;
+            const uniformRiser = highCount === 0 ? rLow : (highCount === numRisers ? rHigh : null);
+
+            // Variance check for IRC compliance (must be ≤ 3/8" = 0.375")
+            const variance = isUniform ? 0 : (rHigh - rLow);
+            const isIRCCompliant = rHigh <= 7.75 && rLow >= 4 && variance <= 0.375;
+
+            return {
+                riserHigh: rHigh,
+                riserLow: rLow,
+                highCount: Math.max(0, Math.min(numRisers, highCount)),
+                lowCount: Math.max(0, Math.min(numRisers, lowCount)),
+                variance: variance,
+                isUniform: isUniform,
+                uniformRiser: uniformRiser,
+                isIRCCompliant: isIRCCompliant,
+                exactRiser: exactRiser
+            };
+        }
+
+        // Helper: Format riser distribution for display
+        function formatRiserDistribution(dist) {
+            if (dist.isUniform) {
+                return `${formatInches(dist.uniformRiser)} × ${dist.highCount + dist.lowCount}`;
+            }
+            // Show both riser heights with counts
+            return `${formatInches(dist.riserHigh)} × ${dist.highCount}, ${formatInches(dist.riserLow)} × ${dist.lowCount}`;
+        }
+
         // Type selector handlers
         optSingle.addEventListener('click', () => {
             stairType = 'single';
@@ -612,23 +671,45 @@
             const height = parseFloat(heightInput.value);
             const width = parseFloat(widthInput.value);
 
+            // Update conversion labels
+            heightConversion.textContent = height > 0 ? toFeetInches(height) : '-';
+            widthConversion.textContent = width > 0 ? toFeetInches(width) : '-';
+
             if (!height || height <= 0 || !width || width < 36) return;
 
             // IRC Math (same for both types)
             const totalRisers = Math.ceil(height / 7.75);
-            const exactRiserHeight = height / totalRisers;
             const totalTreads = totalRisers - 1;
             const treadDepth = 10; // IRC minimum
 
+            // Calculate 0.25" increment distribution
+            const distribution = calculate025Distribution(height, totalRisers);
+
             // Update common outputs
             outRisers.innerText = totalRisers;
-            outRiserHeight.innerHTML = formatDual(exactRiserHeight);
+            outRiserHeight.innerHTML = formatRiserDistribution(distribution);
             outTreads.innerText = totalTreads;
 
+            // Update variance display if element exists
+            const varianceEl = document.getElementById('outVariance');
+            if (varianceEl) {
+                if (distribution.isUniform) {
+                    varianceEl.innerHTML = `<span style="color: #22c55e;">Uniform risers</span>`;
+                } else {
+                    const varianceStr = formatInches(distribution.variance);
+                    const complianceColor = distribution.isIRCCompliant ? '#22c55e' : '#ef4444';
+                    const complianceText = distribution.isIRCCompliant ? 'compliant' : 'exceeds limit';
+                    varianceEl.innerHTML = `<span style="color: ${complianceColor};">${varianceStr} variance (${complianceText})</span>`;
+                }
+            }
+
+            // Use average riser height for drawing (visual representation)
+            const avgRiserHeight = distribution.exactRiser;
+
             if (stairType === 'single') {
-                calculateSingleRun(totalRisers, totalTreads, exactRiserHeight, treadDepth, width, height);
+                calculateSingleRun(totalRisers, totalTreads, avgRiserHeight, treadDepth, width, height);
             } else {
-                calculateSwitchback(totalRisers, totalTreads, exactRiserHeight, treadDepth, width, height);
+                calculateSwitchback(totalRisers, totalTreads, avgRiserHeight, treadDepth, width, height);
             }
         }
 
