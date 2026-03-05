@@ -1,109 +1,42 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code and other AI coding assistants when working with this repository.
+This file defines coding-agent behavior for this repository.
 
-## Project Overview
+## Documentation Authority Chain
+Use documentation in this order:
+1. `PRACTICE_MASTER.md` (practice-wide documentation authority)
+2. `<project>/PROJECT_MASTER.md` (project documentation authority)
+3. `<project>/agent.md` (coding-agent execution protocol for that project)
 
-**Architecture Tools** - A collection of vibe-coded tools for architectural practice. Built with web technologies and integrated with the M3 Design System v2.
+If files disagree, higher authority wins.
 
-## Design System Integration
+## Scope
+- `PROJECT_MASTER.md` files hold project requirements, design decisions, and planning context.
+- `agent.md` files hold only coding-agent workflow and execution rules.
+- Avoid duplicating project narrative content inside `agent.md`.
 
-This project uses components from the **M3 Design System v2** located at:
-`/Users/mwy/Library/Mobile Documents/com~apple~CloudDocs/Projects/m3-design-v2`
+## Git and Backup Behavior
+Agents must follow the git hygiene protocol in `PRACTICE_MASTER.md`.
 
-### Key Principles
+Minimum required workflow:
+1. `git fetch origin --prune`
+2. `git status -sb`
+3. Make scoped changes
+4. `git add -A`
+5. `git commit -m "<concise milestone message>"`
+6. `git push origin <branch>`
+7. `git status -sb`
 
-1. **Use design system components** (`wy-*` web components) whenever possible
-2. **Use design tokens** from the design system for colors, spacing, typography
-3. **Never hardcode values** - always reference CSS custom properties
-4. **Follow the Soft Modernism aesthetic**: organic M3 shapes + editorial typography + warm heritage palette
+Never run destructive git commands unless explicitly requested by the user.
 
-### Consuming the Design System
+## Working Style
+- Be concise and direct.
+- Prefer small, reviewable changes.
+- Keep repository structure explicit and predictable.
+- Update cross-references when files move or are renamed.
 
-```html
-<!-- Load design tokens -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwyuwono/m3-design-v2@main/src/styles/tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwyuwono/m3-design-v2@main/src/styles/main.css">
-
-<!-- Load web components -->
-<script type="module" src="https://cdn.jsdelivr.net/gh/mwyuwono/m3-design-v2@main/dist/web-components.js"></script>
-```
-
-### Design Tokens Reference
-
-**Colors:**
-- `--md-sys-color-primary`: #2C4C3B (Hunter Green)
-- `--md-sys-color-background`: #FDFBF7 (Alabaster)
-- `--md-sys-color-surface`: #F5F2EA (Warm Clay)
-- `--md-sys-color-on-surface`: #121714
-
-**Typography:**
-- Headings: `var(--font-serif)` (Playfair Display)
-- Body/UI: `var(--font-sans)` (DM Sans)
-- Labels: ALL CAPS with `letter-spacing: 0.05em-0.1em`
-
-**Spacing (8px baseline):**
-- `--spacing-xs`: 4px
-- `--spacing-sm`: 8px
-- `--spacing-md`: 16px
-- `--spacing-lg`: 24px
-- `--spacing-xl`: 32px
-
-**Shape:**
-- `--md-sys-shape-corner-small`: 8px
-- `--md-sys-shape-corner-medium`: 16px
-- `--md-sys-shape-corner-full`: 9999px (capsule)
-
-## Tools
-
-| Tool | File | Description |
-|------|------|-------------|
-| Stair Calculator | `stairs.html` | Calculate residential stair dimensions (risers, treads, total run) based on IRC code |
-
-### Adding New Tools
-
-1. Create the tool HTML file in project root (e.g., `newtool.html`)
-2. Add a card to `index.html` following the existing pattern
-3. Update this table in CLAUDE.md
-
-## Project Structure
-
-```
-architecture-tools/
-├── index.html           # Landing page listing all tools
-├── stairs.html          # Stair Calculator tool
-├── stair-calculator-reqs.md  # Requirements doc
-├── CLAUDE.md            # AI assistant instructions
-└── agents.md            # Pointer for non-Claude AI tools
-```
-
-## Development
-
-```bash
-# Start local development server
-npx serve .
-
-# Or with Vite (if added)
-npm run dev
-```
-
-## Code Style
-
-- Use ES modules
-- Prefer web components (LitElement) for reusable UI
-- Keep tools self-contained and focused
-- Document each tool's purpose and usage
-
-## Communication Preferences
-
-**Be concise.** Prefer brief, direct communication over verbose documentation.
-
-- Do NOT create markdown documentation files unless explicitly requested
-- Do NOT write long summaries after completing tasks
-- Focus on action over commentary
-
-## CSS Quality Standards
-
-- NEVER use `!important`
-- Always use design tokens, never hardcode values
-- Follow the design system's token precedence
+## Repository Layout (Current)
+- `PRACTICE_MASTER.md`: practice documentation authority
+- `agents.md`: quick pointer for non-Claude agents
+- `project-personal-cottage/`: active project folder
+- `tools/`: shared tools/utilities
