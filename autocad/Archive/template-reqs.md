@@ -2,7 +2,9 @@ Build a starter AutoCAD template for a new residential architectural design proj
 
 Deliverables
 1) A DXF file named:
-   Architectural_Starter_ArchD_AIA_NCS.dxf
+   Templates/Architectural_Starter_ArchD_AIA_NCS.dxf
+2) A seed DXF used for generation:
+   Templates/seed-archd-annotative.dxf
 
 Requirements
 A) Units & globals
@@ -147,6 +149,9 @@ Color mapping (use a simple, standard CTB-friendly scheme)
 DXF structure requirements
 - Write a valid DXF with at minimum:
   SECTION: HEADER, TABLES (LTYPE, LAYER, STYLE, DIMSTYLE), ENTITIES, EOF
+- Generation method: AC1032 seed-based pipeline.
+  - Load a validated seed DXF and update layers, styles, dimstyles, and template geometry.
+  - Preserve seed OBJECTS/LAYOUT scaffolding for maximum AutoCAD compatibility.
 - Include LTYPE records for Continuous/Dashed/Center/Hidden.
 - Include LAYER table records with:
   - name (code 2)
@@ -166,6 +171,19 @@ Acceptance criteria additions
 - Manual smoke in AutoCAD:
   - dimensions created with A-DIM-STD keep fixed non-annotative behavior
   - dimensions created with A-DIM-ANNO follow annotation scale behavior
+- Annotative metadata integrity:
+  - A-DIM-ANNO must preserve seed dimstyle metadata signature (table/xdata signature comparison).
+  - Include a strict verification mode that fails if the annotative signature cannot be confirmed.
+
+Generator CLI
+- Primary generation:
+  - python3 autocad/generate_archd_template.py
+- Verification:
+  - python3 autocad/generate_archd_template.py --verify
+- Custom seed:
+  - python3 autocad/generate_archd_template.py --seed autocad/Templates/seed-archd-annotative.dxf --verify
+- Strict annotative verification:
+  - python3 autocad/generate_archd_template.py --verify --strict-annotative
 
 
 Output
