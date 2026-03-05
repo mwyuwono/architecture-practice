@@ -98,7 +98,3 @@ At minimum:
 - Commit and push at each meaningful milestone.
 - Keep the working tree clean at task completion unless user requests otherwise.
 
-## Agent Change Log
-- 2026-03-05: Refactored to remove duplicated project narrative content; retained coding-agent execution protocol only.
-- 2026-03-05: Added primary-file header; cross-reference to `../agent.md` for repo-wide agent behavior.
-- 2026-03-05: Added CAD execution decision protocol and CAD QA/conflict checks; retained `PROJECT_MASTER.md` as sole project standards authority.
