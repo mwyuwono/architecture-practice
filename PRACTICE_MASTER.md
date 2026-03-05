@@ -17,6 +17,7 @@ For each project under this repository:
 1. Create `<project>/PROJECT_MASTER.md` as the project documentation authority.
 2. Keep `<project>/agent.md` focused on coding-agent operations.
 3. Keep only minimal project summary in `agent.md` that is required for automation safety.
+4. When a drafting standard or technical policy applies to more than one project, extract it from `PROJECT_MASTER.md` into `standards/` at the practice root and cross-reference from each project.
 
 ## Documentation Strategy
 
@@ -30,6 +31,7 @@ Each piece of information has exactly one canonical home. Cross-reference rather
 | `agent.md` | Coding-agent execution protocol |
 | `CLAUDE.md` | Claude-specific supplement only |
 | `notes/` | Raw unprocessed notes (drop zone) |
+| `standards/` | Shared technical standards applicable across all projects |
 | `tools/` | Shared utilities and scripts |
 
 ### Project-Level Taxonomy
@@ -66,7 +68,8 @@ Each piece of information has exactly one canonical home. Cross-reference rather
 |---|---|---|
 | Design intent and constraints | `PROJECT_MASTER.md` → Design Intent | — |
 | Technical design decisions | `PROJECT_MASTER.md` → Decision Log | `- YYYY-MM-DD: ...` |
-| Drafting standards | `PROJECT_MASTER.md` → Drafting Standard section | — |
+| Practice-wide drafting standards | `standards/<standard>.md` | `autocad-standard.md` |
+| Project-specific drafting overrides | `PROJECT_MASTER.md` → AutoCAD Drafting Standard | — |
 | Client brief / space program | `Program/program.md` | — |
 | Site analysis | `Site/site-analysis.md` | — |
 | Material / assembly specifications | `Specs/<system>-spec.md` | `exterior-wall-spec.md` |
@@ -143,6 +146,3 @@ Agents must proactively keep work backed up and the tree tidy.
   - `agent.md` for coding-agent operations.
 - Keep decisions chronological in each project master file.
 
-## Change Log
-- 2026-03-05: Established practice-wide documentation architecture and coding-agent git hygiene protocol.
-- 2026-03-05: Added documentation strategy: taxonomy, routing table, archive policy, and agent writing standards.

@@ -39,6 +39,15 @@ Minimum required workflow:
 
 Never run destructive git commands unless explicitly requested by the user.
 
+### Session-Start Backup Check
+At the start of each coding session, before substantive work:
+1. Check backup readiness:
+- `~/.config/arch-backup/backup.env` exists and has non-placeholder `S3_BUCKET`
+- LaunchAgent `com.mwy.archbackup` is loaded (`launchctl print gui/$(id -u)/com.mwy.archbackup`)
+- Last sync time from `~/.local/state/arch-backup/last_run_epoch` (if present)
+2. Report a concise status line to the user (`active`/`inactive`, and last sync age if known).
+3. If backup is inactive, unconfigured, or last sync is stale (>24h), explicitly ask whether to run backup now (typically `~/bin/arch_backup_on` and/or `~/bin/arch_backup_sync.sh`) before continuing.
+
 ## Working Style
 
 - Be concise and direct.
@@ -125,6 +134,7 @@ Before writing new content, check whether it already exists in `PROJECT_MASTER.m
 - `PRACTICE_MASTER.md` — practice documentation authority
 - `agent.md` — primary coding-agent instructions (this file)
 - `CLAUDE.md` — Claude-specific supplement; cross-references this file
+- `standards/` — shared technical standards (cross-referenced from project files)
 - `project-personal-cottage/` — active project folder
 - `tools/` — shared tools/utilities
 
@@ -134,7 +144,3 @@ Before writing new content, check whether it already exists in `PROJECT_MASTER.m
 |---|---|---|
 | Personal Cottage | `project-personal-cottage/agent.md` | `project-personal-cottage/PROJECT_MASTER.md` |
 
-## Change Log
-
-- 2026-03-05: Established as primary coding-agent instructions file. `CLAUDE.md` reduced to Claude-specific supplement.
-- 2026-03-05: Added documentation hygiene protocol; expanded notes routing table to full document taxonomy.

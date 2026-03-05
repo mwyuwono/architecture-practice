@@ -9,7 +9,8 @@ This file is the coding-agent execution protocol for the Personal Cottage projec
 Notes ingestion: see root `../agent.md` — Notes Ingestion Protocol. Check `notes/` at session startup per that protocol.
 
 Documentation authority:
-- Project documentation authority: `PROJECT_MASTER.md` (includes AutoCAD drafting standards and policy)
+- Project documentation authority: `PROJECT_MASTER.md` (design intent, decisions, project-specific overrides)
+- Practice-wide AutoCAD drafting standard: `../standards/autocad-standard.md`
 - Practice documentation authority: `../PRACTICE_MASTER.md`
 
 ## Required Inputs for Agent Work
