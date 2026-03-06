@@ -1,0 +1,84 @@
+; NCS Residential Template Setup Script for AutoCAD Mac
+; Run with SCRIPT command after opening updated-starter-template.dxf
+; Units: Architectural 1/16"
+-UNITS 4 16 1 0
+
+
+; System variables
+SETVAR LWDISPLAY 1
+SETVAR INSUNITS 1
+; Load linetypes
+-LINETYPE L Hidden acad.lin
+
+-LINETYPE L Center acad.lin
+
+-LINETYPE L Phantom acad.lin
+
+; Create all NCS layers
+-LAYER N A-WALL C 1 A-WALL LT Continuous A-WALL LW 0.50 A-WALL
+
+-LAYER N A-DOOR C 30 A-DOOR LT Continuous A-DOOR LW 0.35 A-DOOR
+
+-LAYER N A-WIND C 40 A-WIND LT Continuous A-WIND LW 0.35 A-WIND
+
+-LAYER N A-FLOR C 8 A-FLOR LT Continuous A-FLOR LW 0.18 A-FLOR
+
+-LAYER N A-CLNG C 8 A-CLNG LT Hidden A-CLNG LW 0.18 A-CLNG
+
+-LAYER N A-ROOF C 3 A-ROOF LT Continuous A-ROOF LW 0.35 A-ROOF
+
+-LAYER N A-STRS C 4 A-STRS LT Continuous A-STRS LW 0.35 A-STRS
+
+-LAYER N A-FURN C 8 A-FURN LT Continuous A-FURN LW 0.18 A-FURN
+
+-LAYER N A-GLAZ C 5 A-GLAZ LT Continuous A-GLAZ LW 0.25 A-GLAZ
+
+-LAYER N A-COLS C 1 A-COLS LT Continuous A-COLS LW 0.50 A-COLS
+
+-LAYER N A-HATCH C 252 A-HATCH LT Continuous A-HATCH LW 0.09 A-HATCH
+
+-LAYER N A-VIEW C 6 A-VIEW LT Continuous A-VIEW LW 0.25 A-VIEW
+
+-LAYER N A-ANNO-DIMS C 7 A-ANNO-DIMS LT Continuous A-ANNO-DIMS LW 0.18 A-ANNO-DIMS
+
+-LAYER N A-ANNO-TEXT C 7 A-ANNO-TEXT LT Continuous A-ANNO-TEXT LW 0.18 A-ANNO-TEXT
+
+-LAYER N A-ANNO-SYMB C 7 A-ANNO-SYMB LT Continuous A-ANNO-SYMB LW 0.18 A-ANNO-SYMB
+
+-LAYER N S-BEAM C 10 S-BEAM LT Continuous S-BEAM LW 0.35 S-BEAM
+
+-LAYER N S-COLS C 10 S-COLS LT Continuous S-COLS LW 0.50 S-COLS
+
+-LAYER N C-GRID C 9 C-GRID LT Center C-GRID LW 0.18 C-GRID
+
+-LAYER N V-VPRT C 8 V-VPRT LT Continuous V-VPRT P N V-VPRT
+
+; Set current layer to 0
+-LAYER S 0
+
+; Create text styles
+-STYLE ANNO-TEXT Arial 0 1 0 N N
+-STYLE ANNO-TITLE Arial 0 1 0 N N
+; Dimension variables
+SETVAR DIMLUNIT 4
+SETVAR DIMASZ 0.125
+SETVAR DIMTXT 0.09375
+SETVAR DIMEXO 0.0625
+SETVAR DIMEXE 0.125
+SETVAR DIMDLI 0.375
+SETVAR DIMGAP 0.0625
+SETVAR DIMTAD 1
+SETVAR DIMTIH 0
+SETVAR DIMTOH 0
+SETVAR DIMZIN 0
+SETVAR DIMFRAC 2
+; Save dimension style
+-DIMSTYLE S ARCH-DIMS
+; Restore as current
+-DIMSTYLE R ARCH-DIMS
+; Create layout
+-LAYOUT N ARCH-D-Starter
+; Cleanup (do NOT purge - it will delete the unused layers!)
+REGEN
+ZOOM E
+; Done - manually delete Title Block layer content, then save as DWT

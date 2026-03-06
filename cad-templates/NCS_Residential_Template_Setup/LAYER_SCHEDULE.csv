@@ -1,0 +1,22 @@
+Layer Name,Discipline,Major Group,Description,Color,Linetype,Lineweight_mm,Plot,Notes
+0,General,Default,Default layer,7,Continuous,Default,Yes,Do not delete
+A-WALL,Architectural,Wall,Walls - major cut elements,1,Continuous,0.50,Yes,Heavy lineweight for cut lines
+A-DOOR,Architectural,Door,Doors,30,Continuous,0.35,Yes,Medium lineweight
+A-WIND,Architectural,Window,Windows,40,Continuous,0.35,Yes,Medium lineweight
+A-FLOR,Architectural,Floor,Floor patterns and finishes,8,Continuous,0.18,Yes,Light lineweight
+A-CLNG,Architectural,Ceiling,Ceiling lines and grids,8,Hidden,0.18,Yes,Hidden linetype for ceiling above
+A-ROOF,Architectural,Roof,Roof elements,3,Continuous,0.35,Yes,Medium lineweight
+A-STRS,Architectural,Stairs,Stairs and railings,4,Continuous,0.35,Yes,Medium lineweight
+A-FURN,Architectural,Furniture,Furniture and equipment,8,Continuous,0.18,Yes,Light lineweight
+A-GLAZ,Architectural,Glazing,Glass and glazing,5,Continuous,0.25,Yes,Medium-light lineweight
+A-COLS,Architectural,Columns,Architectural columns,1,Continuous,0.50,Yes,Heavy lineweight for cut
+A-HATCH,Architectural,Hatch,Hatch patterns,252,Continuous,0.09,Yes,Very light lineweight
+A-VIEW,Architectural,View,Section and elevation marks,6,Continuous,0.25,Yes,View reference symbols
+A-ANNO-DIMS,Architectural,Annotation,Dimensions,7,Continuous,0.18,Yes,Annotation layer
+A-ANNO-TEXT,Architectural,Annotation,Text and notes,7,Continuous,0.18,Yes,Annotation layer
+A-ANNO-SYMB,Architectural,Annotation,Symbols and tags,7,Continuous,0.18,Yes,Annotation layer
+S-BEAM,Structural,Beam,Structural beams,10,Continuous,0.35,Yes,Medium lineweight
+S-COLS,Structural,Columns,Structural columns,10,Continuous,0.50,Yes,Heavy lineweight for cut
+C-GRID,Coordination,Grid,Column and reference grid,9,Center,0.18,Yes,Center linetype
+V-VPRT,Viewport,Support,Viewport boundaries,8,Continuous,Default,No,Non-plotting layer
+Defpoints,System,Support,Definition points,7,Continuous,Default,No,System-managed - do not modify
