@@ -3,17 +3,18 @@
 This is the single source of truth for creating and maintaining templates in this folder.
 
 ## Folder Layout
-- `Templates/Architectural_Starter_ArchD_AIA_NCS.dxf`: generated template output (primary deliverable)
-- `Templates/Architectural_Starter_ArchD_AIA_NCS.dwg`: DWG counterpart
-- `Templates/seed-archd-annotative.dxf`: seed used to preserve AC1032 scaffolding and annotative metadata
-- `../generate_archd_template.py`: generator/verifier script
+- `cad-templates/Architectural_Starter_ArchD_AIA_NCS.dxf`: generated template output (primary deliverable)
+- `cad-templates/Architectural_Starter_ArchD_AIA_NCS.dwg`: DWG counterpart (manually exported from DXF in AutoCAD)
+- `cad-templates/seed-archd-annotative.dxf`: seed used to preserve AC1032 scaffolding and annotative metadata
+- `project-personal-cottage/generate_archd_template.py`: generator/verifier script
 
 ## Generation Workflow
-1. Activate venv if needed: `source .venv/bin/activate`
-2. Generate template: `python3 generate_archd_template.py`
-3. Verify template: `python3 generate_archd_template.py --verify`
-4. Strict annotative check: `python3 generate_archd_template.py --verify --strict-annotative`
-5. Optional custom seed: `python3 generate_archd_template.py --seed Templates/seed-archd-annotative.dxf --verify`
+1. From repo root, activate venv: `source project-personal-cottage/.venv/bin/activate`
+2. Ensure dependency is installed in that venv: `pip install ezdxf`
+3. Generate template: `python3 project-personal-cottage/generate_archd_template.py`
+4. Verify template: `python3 project-personal-cottage/generate_archd_template.py --verify`
+5. Strict annotative check: `python3 project-personal-cottage/generate_archd_template.py --verify --strict-annotative`
+6. Optional custom seed: `python3 project-personal-cottage/generate_archd_template.py --seed cad-templates/seed-archd-annotative.dxf --verify`
 
 ## Required Technical Baseline
 - DXF target: `AC1032` (AutoCAD 2018)
@@ -44,7 +45,8 @@ This is the single source of truth for creating and maintaining templates in thi
 
 ## Change Control
 - Any template standard change must update both:
-  - `generate_archd_template.py`
-  - this `Templates/TEMPLATE-GUIDE.md`
+  - `project-personal-cottage/generate_archd_template.py`
+  - this `cad-templates/TEMPLATE-GUIDE.md`
 - Regenerate and run `--verify` before commit.
+- If `--verify` warns that the DWG counterpart is missing or stale, re-export `cad-templates/Architectural_Starter_ArchD_AIA_NCS.dwg` from the generated DXF.
 - Validate openability in AutoCAD for Mac before release.

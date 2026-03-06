@@ -13,8 +13,10 @@ from ezdxf.enums import TextEntityAlignment
 from ezdxf.lldxf.const import DXFKeyError
 
 OUTPUT_FILENAME = "Architectural_Starter_ArchD_AIA_NCS.dxf"
+OUTPUT_DWG_FILENAME = "Architectural_Starter_ArchD_AIA_NCS.dwg"
 SEED_FILENAME = "seed-archd-annotative.dxf"
-TEMPLATES_DIRNAME = "Templates"
+PREFERRED_TEMPLATES_REL = Path("..") / "cad-templates"
+LEGACY_TEMPLATES_REL = Path("Templates")
 
 TEXT_STYLE_STD = "A-TEXT-STD"
 TEXT_STYLE_ANNO = "A-TEXT-ANNO"
@@ -81,6 +83,14 @@ LAYERS = [
 
 REQUIRED_LAYERS = {layer[0] for layer in LAYERS}
 REQUIRED_LABELS = {"PROJECT", "DRAWING TITLE", "SHEET", "DATE", "SCALE"}
+
+
+def resolve_templates_dir(base_dir: Path) -> Path:
+    preferred = (base_dir / PREFERRED_TEMPLATES_REL).resolve()
+    legacy = (base_dir / LEGACY_TEMPLATES_REL).resolve()
+    if preferred.exists():
+        return preferred
+    return legacy
 
 
 def set_header_var(header, key: str, value, warnings: list[str]) -> None:
@@ -342,7 +352,7 @@ def verify_output(path: Path, seed_path: Path, strict_annotative: bool) -> tuple
 
 def main(argv: list[str]) -> int:
     base_dir = Path(__file__).resolve().parent
-    templates_dir = base_dir / TEMPLATES_DIRNAME
+    templates_dir = resolve_templates_dir(base_dir)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify", action="store_true", help="Parse and validate generated DXF.")
     parser.add_argument("--strict-annotative", action="store_true", help="Fail if seed annotative signature cannot be verified.")
@@ -362,6 +372,11 @@ def main(argv: list[str]) -> int:
     if args.verify:
         errors, verify_warnings = verify_output(out_path, seed_path, args.strict_annotative)
         warnings = build_warnings + verify_warnings
+        dwg_path = templates_dir / OUTPUT_DWG_FILENAME
+        if not dwg_path.exists():
+            warnings.append(f"DWG counterpart not found: {dwg_path}")
+        elif dwg_path.stat().st_mtime < out_path.stat().st_mtime:
+            warnings.append(f"DWG counterpart is older than generated DXF: {dwg_path}")
         if warnings:
             print("Verification warnings:")
             for warning in warnings:

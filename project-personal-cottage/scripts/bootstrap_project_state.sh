@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PRACTICE_ROOT="$(cd "$ROOT_DIR/.." && pwd)"
 
 REQUIRED_DIRS=(
   "Drawings"
@@ -15,7 +16,7 @@ for rel_dir in "${REQUIRED_DIRS[@]}"; do
   mkdir -p "$ROOT_DIR/$rel_dir"
 done
 
-TEMPLATE_PATH="$ROOT_DIR/Templates/agent.template.md"
+TEMPLATE_PATH="$PRACTICE_ROOT/cad-templates/agent.template.md"
 AGENT_PATH="$ROOT_DIR/agent.md"
 
 if [[ ! -f "$TEMPLATE_PATH" ]]; then

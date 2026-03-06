@@ -7,6 +7,16 @@ Claude users: `CLAUDE.md` cross-references this file and adds Claude-specific lo
 
 ---
 
+## Session Start Sequence
+
+Complete these steps in order before any other work:
+
+1. **Backup check** — verify `~/.config/arch-backup/backup.env` exists with non-placeholder `S3_BUCKET`; check LaunchAgent `com.mwy.archbackup` is loaded (`launchctl print gui/$(id -u)/com.mwy.archbackup`); read last sync time from `~/.local/state/arch-backup/last_run_epoch`. Report a concise status line. If inactive, unconfigured, or last sync is stale (>24h), ask whether to run backup now (`~/bin/arch_backup_on` and/or `~/bin/arch_backup_sync.sh`) before continuing.
+2. **Git status** — run `git fetch origin --prune` then `git status -sb`. Confirm active branch and remote tracking are expected.
+3. **Notes scan** — check all `notes/` folders per the Notes Ingestion Protocol below. If notes are found, process them before proceeding.
+
+---
+
 ## Documentation Authority Chain
 
 Use documentation in this order:
@@ -39,15 +49,6 @@ Minimum required workflow:
 
 Never run destructive git commands unless explicitly requested by the user.
 
-### Session-Start Backup Check
-At the start of each coding session, before substantive work:
-1. Check backup readiness:
-- `~/.config/arch-backup/backup.env` exists and has non-placeholder `S3_BUCKET`
-- LaunchAgent `com.mwy.archbackup` is loaded (`launchctl print gui/$(id -u)/com.mwy.archbackup`)
-- Last sync time from `~/.local/state/arch-backup/last_run_epoch` (if present)
-2. Report a concise status line to the user (`active`/`inactive`, and last sync age if known).
-3. If backup is inactive, unconfigured, or last sync is stale (>24h), explicitly ask whether to run backup now (typically `~/bin/arch_backup_on` and/or `~/bin/arch_backup_sync.sh`) before continuing.
-
 ## Working Style
 
 - Be concise and direct.
@@ -56,8 +57,6 @@ At the start of each coding session, before substantive work:
 - Update cross-references when files move or are renamed.
 
 ## Notes Ingestion Protocol
-
-At the start of each session, before any other work:
 
 ### Step 1 — Scan
 Check all `notes/` folders for files (ignore `.gitkeep`):
